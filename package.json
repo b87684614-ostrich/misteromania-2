@@ -1,0 +1,20 @@
+{
+  "name": "misteromania",
+  "version": "1.0.0",
+  "description": "Мистеромания — онлайн-игра: рисуй себя в капче, сражайся с мистерами и собирай их в команду",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/e2e.js"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.1"
+  }
+}

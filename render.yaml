@@ -1,0 +1,24 @@
+# Мистеромания — деплой на Render как Node.js веб-сервис (НЕ Docker, никакого Dockerfile).
+# runtime: node — Render ставит Node.js и гоняет npm; сборка не компилирует нативный код
+# (БД — встроенный node:sqlite, см. package.json engines >= 22.13), поэтому билд всегда зелёный.
+#
+# Важно: если в GitHub-репозитории игра лежит в подпапке misteromania/ —
+# rootDir ниже указывает Render, откуда собирать. Если файлы лежат
+# прямо в корне репозитория — удали строку rootDir.
+services:
+  - type: web
+    name: misteromania
+    runtime: node                # ← Node.js, не Docker
+    region: frankfurt
+    plan: free
+    rootDir: misteromania        # ← корень приложения внутри репозитория (убрать, если файлы в корне репо)
+    buildCommand: npm install --no-audit --no-fund
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Чтобы база данных (SQLite) переживала рестарты на Render,
+      # подключите Disk (например, 1 GB) и смонтируйте его в /var/data:
+      #   - key: DATA_DIR
+      #     value: /var/data

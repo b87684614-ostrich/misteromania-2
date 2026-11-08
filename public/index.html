@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мистеромания — онлайн-игра</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ===== ЭКРАН ВХОДА ===== -->
+<div id="login" class="screen">
+  <div class="panel login-panel">
+    <h1>🕹 Мистеромания</h1>
+    <p class="sub">Онлайн-игра: ты — <b>Сосуд</b>. Сражайся с мистерами, побеждай их — и они встанут в твою команду!</p>
+    <input id="nick" maxlength="16" placeholder="Введи свой никнейм" autocomplete="off">
+    <div class="modes">
+      <label><input type="radio" name="mode" value="normal" checked>
+        <span>⏱ Обычная капча — <b>5 минут</b> на рисунок</span></label>
+      <label><input type="radio" name="mode" value="creative">
+        <span>🎨 Творчество — <b>без лимита времени</b>, создай искусство</span></label>
+    </div>
+    <button id="notRobot" class="big">🤖 Я не робот</button>
+    <div id="loginError" class="error"></div>
+    <p class="hint">После нажатия откроется Paint: <b>нарисуй себя</b> — кто сидит в этой игре. Это твоя подпись-капча.
+    Одна точка или одна линия <b>не пройдут</b> — проверяет сервер. Рисунки хранятся в базе данных.</p>
+    <p class="hint"><a href="/gallery">🖼 Галерея капч- рисунков игроков</a> · <a href="/api/stats">📊 статистика</a></p>
+  </div>
+</div>
+
+<!-- ===== КАПЧА: PAINT ===== -->
+<div id="captcha" class="screen hidden">
+  <div class="panel captcha-panel">
+    <h2>✏️ Нарисуй себя, кто сидит в этой игре!</h2>
+    <div class="cap-top">
+      <div class="tools">
+        <input type="color" id="color" value="#111111" title="Цвет">
+        <input type="range" id="size" min="2" max="40" value="6" title="Толщина кисти">
+        <button id="eraser" title="Ластик">🧽</button>
+        <button id="clear" title="Очистить холст">🗑 Очистить</button>
+      </div>
+      <div id="capTimer" class="timer hidden">⏱ осталось: <b id="timerText">5:00</b></div>
+    </div>
+    <canvas id="paint" width="960" height="600"></canvas>
+    <div class="cap-bottom">
+      <div id="capError" class="error"></div>
+      <button id="capOk" class="big">✅ О'кей</button>
+    </div>
+    <p class="hint" id="capHint"></p>
+  </div>
+</div>
+
+<!-- ===== ИГРА ===== -->
+<div id="game" class="screen hidden">
+  <canvas id="world"></canvas>
+  <div id="hud">
+    <div class="hud-left">
+      <div id="hpBar"><div id="hpFill"></div><span id="hpText">100/100</span></div>
+      <div id="scoreLine">⭐ <span id="score">0</span> · ☠ <span id="kills">0</span></div>
+      <div id="teamRow" title="Твоя команда пойманных мистеров"></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-title">🟢 Онлайн: <span id="online">1</span></div>
+      <ul id="playerList"></ul>
+    </div>
+    <div id="feed"></div>
+    <div id="help">WASD/стрелки — движение · мышь — прицел · клик/зажатие — удар · пойманные мистеры бьют сами</div>
+    <div id="deathOverlay" class="hidden">☠ Тебя одолели! Воскреснешь через <b id="respawnSec">4</b>…</div>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/client.js"></script>
+</body>
+</html>
